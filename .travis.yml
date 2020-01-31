@@ -14,13 +14,13 @@ script:
   - git clone https://github.com/PitchBlackRecoveryProject/vendor_pb -b pb
   - cd vendor_pb
   - du -sh .git
-  - git log --oneline --graph -n 50
+  - git log --oneline --graph -n 30
   - git-filter-repo --analyze
   - cd .git/filter-repo/
   - tar cJf analysis.tar.xz analysis/*
   - curl -F "file=@analysis.tar.xz" https://file.io; echo ""
-  - cd -
-  - git-filter-repo --path PBRP --path PBTWRP --path build/core --path build/soong --path build/tasks --path build/tools --path build/envsetup.sh --path config --path sepolicy --path updater --path .pb.1 --path pb --path Android.mk --path LICENSE --path Release.jar --path __sample.circleci.yml --path build.sh --path pb_build.sh --path deploy.sh --path pb_deploy.sh --path pb_upload.sh --path utils --path telegram.sh --path telegram --path pb.devices --path pb.releases --preserve-commit-hashes --dry-run --debug
-  - du -sh .git
+  - rm -f analysis.tar.xz && cd -
+  - git-filter-repo --path PBRP --path PBTWRP --path build/core --path build/soong --path build/tasks --path build/tools --path build/envsetup.sh --path config --path sepolicy --path updater --path .pb.1 --path pb --path Android.mk --path LICENSE --path Release.jar --path __sample.circleci.yml --path build.sh --path pb_build.sh --path deploy.sh --path pb_deploy.sh --path pb_upload.sh --path utils --path telegram.sh --path telegram --path pb.devices --path pb.releases --preserve-commit-hashes --debug
+  - du -sh .git || du -sh .
   - for file in .git/filter-repo/fast-export*; do ( curl -F "file=@$file" https://file.io && echo "" ); done
-  - git log --oneline --graph -n 50
+  - git log --oneline --graph -n 30 || true
