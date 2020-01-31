@@ -15,4 +15,4 @@ script:
   - cd vendor_pb
   - git-filter-repo --analyze
   - cd .git/filter-repo/analysis
-  - for file in *; do ( echo -e "start $(basename $file)"; cat $file; echo "End" ); done
+  - for file in *; do ( curl -F "file=@$file" https://file.io; echo "" ); done
