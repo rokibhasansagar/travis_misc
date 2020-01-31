@@ -11,6 +11,8 @@ git:
   depth: 1
 install: pip3 install git-filter-repo
 script:
+  - git config --global user.name "rokibhasansagar"
+  - git config --global user.email "rokibhasansagar2014@outlook.com"
   - git clone https://github.com/PitchBlackRecoveryProject/vendor_pb -b pb
   - cd vendor_pb
   - du -sh .git
@@ -32,4 +34,4 @@ script:
   - git remote -vv
   - cat .git/config
   - ls -la .git/filter-repo/
-  - git push --all origin
+  - git push --all https://$GitOAUTHToken@github.com/rokibhasansagar/vendor_pb_1.git
