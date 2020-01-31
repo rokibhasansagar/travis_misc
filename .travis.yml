@@ -12,7 +12,7 @@ script:
   - git clone https://github.com/PitchBlackRecoveryProject/vendor_pb -b pb
   - cd vendor_pb
   - git-filter-repo --analyze
-  - cd .git/filter-repo/
-  - tar cJf analysis.tar.xz analysis
-  - curl --upload-file analysis.tar.xz https://transfer.sh/ && echo ""
-  - cd ../..
+  - cd .git/filter-repo/analysis
+  - tar cJvf ../analysis.tar.xz *
+  - cd ../
+  - for file in *.tar.xz; do ( curl --upload-file analysis.tar.xz https://transfer.sh/analysis.tar.xz && echo '' ); done
