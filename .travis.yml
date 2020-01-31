@@ -7,8 +7,9 @@ sudo: required
 git:
   depth: 1
 install: pip3 install git-filter-repo
+before_script: pip3 freeze || true
 script:
   - git clone https://github.com/PitchBlackRecoveryProject/vendor_pb -b pb --single-branch
   - cd vendor_pb
-  - python3 git-filter-repo --analyze
+  - git-filter-repo --analyze
   - cd .git/ && ls -laR
