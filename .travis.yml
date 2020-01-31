@@ -2,17 +2,17 @@ os: linux
 dist: bionic
 language: python
 python:
-  - "3.6"
+  - "3.7"
+addons:
+  apt:
+    update: true
 sudo: required
 git:
   depth: 1
 install: pip3 install git-filter-repo
-before_script: pip3 freeze || true
 script:
   - git clone https://github.com/PitchBlackRecoveryProject/vendor_pb -b pb
   - cd vendor_pb
   - git-filter-repo --analyze
   - cd .git/filter-repo/analysis
-  - tar cJvf ../analysis.tar.xz *
-  - cd ../ && du -sh *
-  - curl --upload-file analysis.tar.xz https://transfer.sh/analysis.tar.xz && echo ''
+  - for file in *; do ( cat $file; echo "End" ); done
