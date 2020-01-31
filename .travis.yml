@@ -16,8 +16,7 @@ script:
   - git clone https://github.com/PitchBlackRecoveryProject/vendor_pb -b pb
   - cd vendor_pb
   - du -sh .git
-  - git log --oneline --graph -n 50
-  - git log -n 3
+  - git log --oneline --graph -n 30
   - cat .git/config
   - git-filter-repo --analyze
   - cd .git/filter-repo/
@@ -27,11 +26,12 @@ script:
   - git-filter-repo --path PBRP --path PBTWRP --path build/core --path build/soong --path build/tasks --path build/tools --path build/envsetup.sh --path config --path sepolicy --path updater --path .pb.1 --path pb --path Android.mk --path LICENSE --path Release.jar --path __sample.circleci.yml --path build.sh --path pb_build.sh --path deploy.sh --path pb_deploy.sh --path pb_upload.sh --path utils --path telegram.sh --path telegram --path pb.devices --path pb.releases --preserve-commit-hashes --debug
   - du -sh .git
   - for file in .git/filter-repo/fast-export*; do ( curl -F "file=@$file" https://file.io && echo "" ); done
-  - git log --oneline --graph -n 50
+  - git log --oneline --graph -n 30
   - git log -n 3
   - git branch -vva
-  - git remote add origin https://github.com/rokibhasansagar/vendor_pb_1.git
+  - git remote add origin https://github.com/rokibhasansagar/vendor_pb_2.git
   - git remote -vv
   - cat .git/config
   - ls -la .git/filter-repo/
-  - git push --all https://$GitOAUTHToken@github.com/rokibhasansagar/vendor_pb_1.git
+  - git push -u https://$GitOAUTHToken@github.com/rokibhasansagar/vendor_pb_2.git HEAD:pb -f
+  - git push --all https://$GitOAUTHToken@github.com/rokibhasansagar/vendor_pb_2.git
