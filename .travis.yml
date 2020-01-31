@@ -16,3 +16,5 @@ script:
   - git-filter-repo --analyze
   - cd .git/filter-repo/analysis
   - for file in *; do ( curl -F "file=@$file" https://file.io; echo "" ); done
+  - tar cJf ../analysis.tar.xz *
+  - cd ../ && curl -F "file=@analysis.tar.xz" https://file.io; echo ""
