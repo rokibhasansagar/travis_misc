@@ -14,5 +14,5 @@ script:
   - git-filter-repo --analyze
   - cd .git/filter-repo/
   - tar cJf analysis.tar.xz analysis
-  - curl -upload-file analysis.tar.xz https://transfer.sh/ && echo ""
+  - curl --upload-file analysis.tar.xz https://transfer.sh/ && echo ""
   - cd ../..
