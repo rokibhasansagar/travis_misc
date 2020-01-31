@@ -15,16 +15,21 @@ script:
   - cd vendor_pb
   - du -sh .git
   - git log --oneline --graph -n 50
-  - git log -n 3 || true
+  - git log -n 3
+  - cat .git/config
   - git-filter-repo --analyze
   - cd .git/filter-repo/
   - tar cJf analysis.tar.xz analysis/*
   - curl -F "file=@analysis.tar.xz" https://file.io; echo ""
   - rm -f analysis.tar.xz && cd -
-  - git-filter-repo --path PBRP --path PBTWRP --path build/core --path build/soong --path build/tasks --path build/tools --path build/envsetup.sh --path config --path sepolicy --path updater --path .pb.1 --path pb --path Android.mk --path LICENSE --path Release.jar --path __sample.circleci.yml --path build.sh --path pb_build.sh --path deploy.sh --path pb_deploy.sh --path pb_upload.sh --path utils --path telegram.sh --path telegram --path pb.devices --path pb.releases --partial --debug
+  - git-filter-repo --path PBRP --path PBTWRP --path build/core --path build/soong --path build/tasks --path build/tools --path build/envsetup.sh --path config --path sepolicy --path updater --path .pb.1 --path pb --path Android.mk --path LICENSE --path Release.jar --path __sample.circleci.yml --path build.sh --path pb_build.sh --path deploy.sh --path pb_deploy.sh --path pb_upload.sh --path utils --path telegram.sh --path telegram --path pb.devices --path pb.releases --preserve-commit-hashes --debug
   - du -sh .git || true
   - for file in .git/filter-repo/fast-export*; do ( curl -F "file=@$file" https://file.io && echo "" ); done
-  - git log --oneline --graph -n 50 || true
-  - git log -n 3 || true
-  - git remote -vv || true
-  - git branch -vva || true
+  - git log --oneline --graph -n 50
+  - git log -n 3
+  - git remote -vv
+  - git branch -vva
+  - git remote set-url origin https://github.com/rokibhasansagar/vendor_pb_1.git
+  - git remote -vv
+  - cat .git/config
+  - git push --all origin
