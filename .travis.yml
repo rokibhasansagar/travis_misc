@@ -16,6 +16,5 @@ script:
   - git clone https://github.com/rokibhasansagar/vendor_pb_single.git -b pb
   - cd vendor_pb_single
   - git remote add omni https://github.com/omnirom/android_vendor_omni
-  - git pull -v --ff --allow-unrelated-histories -s resolve omni android-9.0 || echo "resolve failed"
-  - ( git reset --hard && git pull -v --ff --allow-unrelated-histories -X ours omni android-9.0 ) || echo "strategy ours also failed"
-  - git log --oneline --graph -n 30
+  - ( git pull -v --ff -X ours omni android-9.0 && git log --oneline --graph -n 30 ) || echo "failed"
+  - ( git reset --hard && git pull --ff --allow-unrelated-histories -X ours omni android-9.0 && git log --oneline --graph -n 30 ) || echo "failed"
