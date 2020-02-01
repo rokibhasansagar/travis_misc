@@ -13,24 +13,8 @@ install: pip3 install git-filter-repo
 script:
   - git config --global user.name "rokibhasansagar"
   - git config --global user.email "rokibhasansagar2014@outlook.com"
-  - git clone https://github.com/PitchBlackRecoveryProject/vendor_pb -b pb --single-branch
-  - cd vendor_pb
-  - du -sh .git
+  - git clone https://github.com/rokibhasansagar/vendor_pb_single.git -b pb
+  - cd vendor_pb_single
+  - git remote add omni https://github.com/omnirom/android_vendor_omni
+  - git pull omni android-9.0
   - git log --oneline --graph -n 30
-  - cat .git/config
-  - git-filter-repo --analyze
-  - cd .git/filter-repo/
-  - tar cJf analysis.tar.xz analysis/*
-  - curl -F "file=@analysis.tar.xz" https://file.io; echo ""
-  - rm -f analysis.tar.xz && cd -
-  - git-filter-repo --path PBRP --path PBTWRP --path build/core --path build/soong --path build/tasks --path build/tools --path build/envsetup.sh --path config --path sepolicy --path updater --path .pb.1 --path pb --path Android.mk --path LICENSE --path Release.jar --path __sample.circleci.yml --path build.sh --path pb_build.sh --path deploy.sh --path pb_deploy.sh --path pb_upload.sh --path utils --path telegram.sh --path telegram --path pb.devices --path pb.releases --preserve-commit-hashes --debug
-  - du -sh .git
-  - for file in .git/filter-repo/fast-export*; do ( curl -F "file=@$file" https://file.io && echo "" ); done
-  - git log --oneline --graph -n 30
-  - git log -n 3
-  - git branch -vva
-  - git remote add origin https://github.com/rokibhasansagar/vendor_pb_single.git
-  - git remote -vv
-  - cat .git/config
-  - ls -la .git/filter-repo/
-  - git push -u https://$GitOAUTHToken@github.com/rokibhasansagar/vendor_pb_single.git HEAD:pb -f
