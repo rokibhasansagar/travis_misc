@@ -6,7 +6,6 @@ python:
 addons:
   apt:
     update: true
-sudo: required
 git:
   depth: 1
 install: pip3 install git-filter-repo
@@ -18,7 +17,6 @@ script:
   - git remote add omni https://github.com/omnirom/android_vendor_omni
   - git log --oneline --graph -n 5
   - git fetch omni android-9.0
-  - git checkout omni/android-9.0 -- config build/tools build/core build/soong build/tasks sepolicy
-  - git add -A .
-  - git commit -m "Specific folder merge"
-  - git push -f -u https://$GitOAUTHToken@github.com/rokibhasansagar/vendor_pb_single.git HEAD:merged
+  - git cherry-pick 380d19cea2857d5901d7e7163f65ccc66d7bbad7
+  - ( git add -A . && git commit -m "Specific pick" ) || true
+  - git push -f -u https://$GitOAUTHToken@github.com/rokibhasansagar/vendor_pb_single.git HEAD:pick
