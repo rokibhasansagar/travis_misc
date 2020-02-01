@@ -17,6 +17,6 @@ script:
   - cd vendor_pb_single
   - git remote add omni https://github.com/omnirom/android_vendor_omni
   - git log --oneline --graph -n 5
-  - git pull -q --progress --ff -X ours --no-allow-unrelated-histories omni android-9.0
+  - git pull -q --progress --no-ff -X ours --no-allow-unrelated-histories omni android-9.0
   - git log --oneline --graph -n 50
-  - git push -f -u https://$GitOAUTHToken@github.com/rokibhasansagar/vendor_pb_single.git HEAD:ff
+  - git push -f -u https://$GitOAUTHToken@github.com/rokibhasansagar/vendor_pb_single.git HEAD:no-ff
