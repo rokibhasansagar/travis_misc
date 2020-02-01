@@ -30,7 +30,7 @@ script:
   - curl -F "file=@fast-export.tar.xz" https://file.io; echo ""
   - rm -f fast-export.tar.xz && cd -
   - git log --oneline --graph -n 30
-  - git remote add origin https://github.com/rokibhasansagar/vendor_pb_filtered.git
+  - git remote add origin https://github.com/PitchBlackRecoveryProject/vendor_filtered.git
   - git remote -vv
   - cat .git/config
-  - git push -u https://$GitOAUTHToken@github.com/rokibhasansagar/vendor_pb_filtered.git HEAD:pb -f
+  - git push -u https://$GitOAUTHToken@github.com/PitchBlackRecoveryProject/vendor_filtered.git HEAD:pb -f
