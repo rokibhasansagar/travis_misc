@@ -26,8 +26,8 @@ script:
   - |
     docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v "$(pwd):/home/cmbuild/twrp/:rw,z" yshalsager/cyanogenmod bash << EOF
     cd /home/cmbuild/twrp/
-    source build/envsetup.sh
-    lunch omni_I805-userdebug
+    echo "Sourcing..."; source build/envsetup.sh
+    echo "Start Lunch..."; lunch omni_I805-userdebug
     mka recoveryimage 1>/dev/null
     exit
     EOF
