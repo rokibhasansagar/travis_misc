@@ -1,36 +1,42 @@
 os: linux
 dist: bionic
-language: python
-python:
-  - "3.7"
+language: generic
 addons:
   apt:
     update: true
 git:
   depth: 1
-install: pip3 install git-filter-repo
+services:
+  - docker
+before_install:
+  - docker pull yshalsager/cyanogenmod:latest
+before_script:
+  - cd $HOME && mkdir twrp
+  - wget -q https://github.com/PhantomZone54/twrp_sources_norepo/releases/download/v3.3.1-20200222/MinimalOmniRecovery-twrp-6.0-norepo-20200222.tar.xz
+    -O $HOME/twrp.tar.xz
+  - tar -xJf twrp.tar.xz --directory $HOME/twrp/ && rm twrp.tar.xz
 script:
-  - git config --global user.name "rokibhasansagar"
-  - git config --global user.email "rokibhasansagar2014@outlook.com"
-  - git config --global color.ui true
-  - git clone https://github.com/PitchBlackRecoveryProject/vendor_pb -b pb --single-branch
-  - cd vendor_pb
-  - du -sh .git
-  - git log --oneline --graph -n 30
-  - cat .git/config
-  - git-filter-repo --analyze
-  - cd .git/filter-repo/
-  - tar cJf analysis.tar.xz analysis/*
-  - curl -F "file=@analysis.tar.xz" https://file.io; echo ""
-  - rm -f analysis.tar.xz && cd -
-  - git-filter-repo --path PBRP --path PBTWRP --path build/core --path build/soong --path build/tasks --path build/tools --path build/envsetup.sh --path config --path sepolicy --path updater --path .pb.1 --path pb --path Android.mk --path LICENSE --path Release.jar --path __sample.circleci.yml --path build.sh --path pb_build.sh --path deploy.sh --path pb_deploy.sh --path pb_upload.sh --path utils --path telegram.sh --path telegram --path pb.devices --path pb.releases --preserve-commit-hashes --debug
-  - du -sh .git
-  - cd .git/filter-repo/
-  - tar cJf fast-export.tar.xz fast-export*
-  - curl -F "file=@fast-export.tar.xz" https://file.io; echo ""
-  - rm -f fast-export.tar.xz && cd -
-  - git log --oneline --graph -n 30
-  - git remote add origin https://github.com/PitchBlackRecoveryProject/vendor_filtered.git
-  - git remote -vv
-  - cat .git/config
-  - git push -u https://$GitOAUTHToken@github.com/PitchBlackRecoveryProject/vendor_filtered.git HEAD:pb -f
+  - cd $HOME/twrp/ && git clone https://github.com/rokibhasansagar/android_device_Itel_I805.git -b twrp --depth 1 device/Itel/I805
+  - rm -rf bootable/recovery && git clone https://github.com/TeamWin/android_bootable_recovery -b android-9.0 --depth 1 bootable/recovery
+  - rm -rf external/busybox && git clone https://github.com/omnirom/android_external_busybox -b android-9.0 --depth 1 external/busybox
+  - rm -rf external/ntfs-3g && git clone https://github.com/omnirom/android_external_ntfs-3g -b android-8.1 --depth 1 external/ntfs-3g
+  - rm -rf external/exfat && git clone https://github.com/omnirom/android_external_exfat -b android-8.1 --depth 1 external/exfat
+  - rm -rf external/fuse && git clone https://github.com/omnirom/android_external_fuse -b android-8.0 --depth 1 external/fuse
+  - ( rm -rf system/vold || true) && git clone https://github.com/omnirom/android_system_vold -b android-6.0 --depth 1 system/vold
+  - |
+    docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v "$(pwd):/home/cmbuild/twrp/:rw,z" yshalsager/cyanogenmod bash << EOF
+    sudo apt-get update -qqy
+    #sudo apt-get install -qqy --no-install-recommends openjdk-8-jdk-headless
+    cd /home/cmbuild/twrp/
+    source build/envsetup.sh
+    lunch omni_I805-userdebug
+    mka recoveryimage 1>/dev/null
+    exit
+    EOF
+after_success:
+  - export version=$(cat bootable/recovery/variables.h | grep "define TW_MAIN_VERSION_STR" | cut -d '"' -f2)
+  - export nowTime=$(date +%Y%m%d-%H%M)
+  - cp $HOME/twrp/out/target/product/I805/recovery.img $HOME/twrp/TWRP-$version-I805-$nowTime-Unofficial.img
+  - cd $HOME/twrp/
+  - curl -F "file=@TWRP-$version-I805-$nowTime-Unofficial.img" https://file.io; echo ""
+  - curl -F "file=@TWRP-$version-I805-$nowTime-Unofficial.img" https://transfer.sh/; echo ""
