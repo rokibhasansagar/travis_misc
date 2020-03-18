@@ -26,8 +26,10 @@ script:
   - |
     docker run --rm -i -e USER_ID=$(id -u) -e GROUP_ID=$(id -g) -v "$(pwd):/home/cmbuild/twrp/:rw,z" yshalsager/cyanogenmod bash << EOF
     cd /home/cmbuild/twrp/
-    echo "Sourcing..."; source build/envsetup.sh; echo "Source done"
-    echo "Start Lunch..."; lunch omni_I805-userdebug
+    source build/envsetup.sh
+    ( echo $(TARGET_PREBUILT_KERNEL) || echo ${TARGET_PREBUILT_KERNEL} ) || true
+    ( echo $(LOCAL_PATH) || echo ${LOCAL_PATH} ) || true
+    lunch omni_I805-userdebug
     mka recoveryimage 1>/dev/null
     exit
     EOF
