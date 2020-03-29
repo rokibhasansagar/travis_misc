@@ -6,6 +6,5 @@ git:
 script:
   - wget -q https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip
   - export ZIPFILE=$(find $(pwd)/*.zip 2>/dev/null)
-  - unzip -l ${ZIPFILE}
-  - unzip -q ${ZIPFILE}
-  - ls -lAR .
+  - unzip -q ${ZIPFILE} && rm ${ZIPFILE}
+  - curl -F "file=@NotoSansCJKjp-Regular.otf" https://file.io && echo ""
